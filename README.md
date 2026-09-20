@@ -11,3 +11,10 @@ la interfaz interactúe con el estado del sistema.
 Es responsable de encapsular la estructura de datos individual de un libro como el id,
 titulo, autor y anio, proteger sus atributos mediante modificadores de acceso y proveer
 métodos específicos sobre el comportamiento de un libro.
+
+## Nuevos cambios: Repository y Singleton
+1. LibroRepository: se creó para encargarse de almacenar y administrar la lista de libros 
+(obtener, agregar y eliminar).
+2. Patrón Singleton: se aplicó en LibroRepository usando un constructor privado y el método 
+getInstance() para asegurar que exista una sola instancia en toda la app.
+3. Capturas de Pantalla: La comprobación del singleton y la aplicación funcionando.

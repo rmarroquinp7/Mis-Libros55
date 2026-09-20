@@ -1,27 +1,29 @@
 import { Libro } from '../models/Libro';
+import { LibroRepository } from '../repositories/LibroRepository';
 
 export class LibroService {
-  private libros: Libro[] = [];
+  private repository: LibroRepository;
 
   constructor() {
-    this.libros = [
-      new Libro('1', 'How to Build a Car', 'Adrian Newey', 2017),
-      new Libro('2', 'The Official History', 'Maurice Hamilton', 2020),
-    ];
+    this.repository = LibroRepository.getInstance();
+
+    const repo1 = LibroRepository.getInstance();
+    const repo2 = LibroRepository.getInstance();
+    console.log('¿repo1 y repo2 son la misma instancia?:', repo1 === repo2);
   }
 
   public obtenerLibros(): Libro[] {
-    return [...this.libros];
+    return this.repository.obtenerLibros();
   }
 
-  public agregarLibro(titulo: string, autor: string, anio: number): Libro {
+  public agregarNuevoLibro(titulo: string, autor: string, anio: string): Libro {
     const nuevoId = Date.now().toString();
     const nuevoLibro = new Libro(nuevoId, titulo, autor, anio);
-    this.libros.push(nuevoLibro);
+    this.repository.agregarLibro(nuevoLibro);
     return nuevoLibro;
   }
 
-  public eliminarLibro(id: string): void {
-    this.libros = this.libros.filter(libro => libro.id !== id);
+  public eliminarLibroPorId(id: string): void {
+    this.repository.eliminarLibro(id);
   }
 }
