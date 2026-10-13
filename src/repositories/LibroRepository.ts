@@ -1,16 +1,10 @@
 import { Libro } from '../models/Libro';
+import { supabase } from '../services/supabase';
 
 export class LibroRepository {
   private static instancia: LibroRepository;
 
-  private libros: Libro[] = [];
-
-  private constructor() {
-    this.libros = [
-      new Libro('1', 'Cien años de soledad', 'Gabriel García Márquez', '1967'),
-      new Libro('2', 'El principito', 'Antoine de Saint-Exupéry', '1943')
-    ];
-  }
+  private constructor() {}
 
   public static getInstance(): LibroRepository {
     if (!LibroRepository.instancia) {
@@ -19,15 +13,18 @@ export class LibroRepository {
     return LibroRepository.instancia;
   }
 
-  public obtenerLibros(): Libro[] {
-    return this.libros;
+  public async obtenerLibros(): Promise<Libro[]> {
+    const { data, error } = await supabase.from('libros').select('*');
+    if (error || !data) return [];
+    
+    return data.map((item: any) => new Libro(String(item.id), item.titulo, item.autor, String(item.anio)));
   }
 
-  public agregarLibro(libro: Libro): void {
-    this.libros.push(libro);
+  public async agregarLibro(titulo: string, autor: string, anio: string): Promise<void> {
+    await supabase.from('libros').insert([{ titulo, autor, anio }]);
   }
 
-  public eliminarLibro(id: string): void {
-    this.libros = this.libros.filter(libro => libro.getId() !== id);
+  public async eliminarLibro(id: string): Promise<void> {
+    await supabase.from('libros').delete().eq('id', id);
   }
 }

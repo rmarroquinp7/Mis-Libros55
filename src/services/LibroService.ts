@@ -6,24 +6,17 @@ export class LibroService {
 
   constructor() {
     this.repository = LibroRepository.getInstance();
-
-    const repo1 = LibroRepository.getInstance();
-    const repo2 = LibroRepository.getInstance();
-    console.log('¿repo1 y repo2 son la misma instancia?:', repo1 === repo2);
   }
 
-  public obtenerLibros(): Libro[] {
-    return this.repository.obtenerLibros();
+  public async obtenerLibros(): Promise<Libro[]> {
+    return await this.repository.obtenerLibros();
   }
 
-  public agregarNuevoLibro(titulo: string, autor: string, anio: string): Libro {
-    const nuevoId = Date.now().toString();
-    const nuevoLibro = new Libro(nuevoId, titulo, autor, anio);
-    this.repository.agregarLibro(nuevoLibro);
-    return nuevoLibro;
+  public async agregarNuevoLibro(titulo: string, autor: string, anio: string): Promise<void> {
+    await this.repository.agregarLibro(titulo, autor, anio);
   }
 
-  public eliminarLibroPorId(id: string): void {
-    this.repository.eliminarLibro(id);
+  public async eliminarLibroPorId(id: string): Promise<void> {
+    await this.repository.eliminarLibro(id);
   }
 }
